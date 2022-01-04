@@ -14,7 +14,7 @@ int fun(){
   return w=w^(w>>19)^(t^(t>>5));
 }
 signed main(){
-      freopen("file.txt","w",stdout);
+      freopen("file.txt","w",stdout) ;
       for(int i=0;i<100000;i++){
         printf("%lld ",fun());
       }
