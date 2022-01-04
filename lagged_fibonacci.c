@@ -2,7 +2,7 @@
 #include<time.h>
 
 signed main(){
-	freopen("output1.txt","w",stdout);
+	freopen("file.txt","w",stdout);
 	int mod=100007;
 	int x=time(0);
 	int arr[7];
