@@ -1,6 +1,6 @@
 Programming with Threads : Creating and Waiting
 
-Task 0: To create a basic multi-threaded program that will print its arguments. Use Chapter 27 from Textbook for further reference. Learn to use (refer man pages):
+Task 0: To create a basic multi-threaded program that will print its arguments.
 
 pthread_create  function (see the following code for usage)
 
