@@ -1,0 +1,61 @@
+Automated Data Workflows: Parallel Sorting and Searching
+Background: Automated data workflows are basis for modern software development and query processing. One example is
+to locate items of interest in a stream of data. For instance, identifying the type of bugs reported in a give lifecycle
+allows software teams to adopt course corrections. Also, there are numerous applications of data analytics on such data.
+This lab assignment will explore a simple application of searching on sorted data. The workflow has three parts:
+
+a) Assume that a file is available with unsorted arrays. The number of such arrays is MAX.
+
+b) Data sorting: A set of threads are waiting to read the data, sort it, and store the sorted data in a different file.  Once the sorting threads complete all the sorting, the next phase of searching will begin. For this problem, we will use only one sorting thread.
+
+c) Searching: A series of queries are issued by users at random. A series of threads (each thread handles one query) read the sorted data (whatever available) and report matching array identifiers and position within the array where the match is found. The query can match multiple locations and all locations are to be reported.
+
+
+Problem Specifications
+ 
+Input:  MAX (>30): Arrays of different sets of integers: either user supplied from a file arraydata.txt or randomly generated. Integers should be random and between 1  to 1000. Number of integers per array is chosen at random (100 to 200 is fine). 
+
+M (set it equal to MAX):   random query integers (querydata.txt) ---arrays are new-line (empty line) separated. Array values are space separated.
+
+E.g., Array format; Array Id:  Arr[0] Arr[1] Arr[2]      .....
+Sample array.             67:   21     33     1      2 4 ....
+
+Output: Locations of each integer in each array and identifier of each array  (if found). Note that a value can be found in multiple locations inside an array.
+
+E.g., Query M: 33 
+Print: Found 33 at location 1 in Array 67
+
+Programming Constraints: 
+
+1. The number of sorting (one) and searching threads (M) is fixed. 
+2. All threads should be created at the beginning of the main program, i.e., you should
+not put any pthread_create anywhere else in the code. 
+3. The signaling among threads should be handled through the chosen synchronization primitives (Mutexes, Condition Variables or Semaphores). 
+
+Output Specifications (Grading is done "Grading specs" (a), (b), (c), (d) and (e) given below)
+
+1. Searching is always preceded by sorting. 
+
+2. Create a single thread to sort the arrays. Multiple searching threads, one per array (Total: M).
+
+3. The sorting thread signals one searching thread that will begin searching for the corresponding query integer.
+
+Grading specs (a,b,c): 
+
+a) Signaling method used (Choice of synchronization primitive and design of the signaling mechanism)
+
+b) Before signaling a search thread, the sorting thread prints the identifier of the array that is sorted "Array XY is now sorted"
+
+c) Print a message whenever the sorting thread signals a search thread. (number of messages should be equal to number of searching threads).
+
+4. The sorting thread goes back to sorting other arrays after the signaling. If no more arrays exist, the sorting thread exits.
+
+Grading spec:
+
+d) The sorting thread prints message saying sorting phase is complete and prints the final value of the global identifier.
+
+5. The output of searching thread can be immediately shown after the search is complete (and the thread will exit once its task completed). 
+
+Grading spec:
+
+e) Whenever a searching thread completes, the thread will print its identifier the identifier of the array, the query integer and the array locations where the query integer was found in the array. Note that for each searching thread, all the arrays are not available (some might still be unsorted). The searching thread (that was signaled/woken up) will search in whatever arrays are available at that time and print the message accordingly. The searching thread should also print identifier of array where the search integer is not found. Therefore, the number of identifiers printed by a searching thread should be equal to the number of arrays sorted by the sorting thread until that point.
