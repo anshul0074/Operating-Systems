@@ -1,0 +1,86 @@
+Covered topics: files, fork and inter-process communication. 
+
+Background Notes
+ 
+Background Note 1: Reading and writing from/to files
+
+FILE *fopen(const char *path, const char *mode);
+
+mode: 
+"r" (read), 
+"r+" (read+write), 
+"w" (truncate file to zero or create text file)
+"w+": (read+write)
+'a': (append)
+'a+':(reading+appending)
+
+
+size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+
+fread(buff, SIZE, NUMELEM, fd)
+
+size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
+
+fwrite(buff,SIZE, strlen(buff),fd)
+
+int fseek(FILE *stream, long offset, int whence);
+fseek(fd,11,SEEK_CUR)
+
+Background Note 2: Learning and Using Fork
+
+1. Use man fork to learn about the fork commands available on your configuration.
+
+2. Practice Example: compile the following code to create a simple child-parent
+
+#include <stdio.h>
+#include<stdlib.h>
+#include<sys/wait.h>
+#include<unistd.h>
+int main(char *argv[], int argc)
+{
+    pid_t pid;
+    int r;
+    int a =10;
+    int b = 10;
+      // check a and b
+
+    pid=fork();
+    // check pid
+
+    if(pid==0)
+    { //CHILD PROCESS
+    a=b*5;
+    b=a*5;
+            printf("\nChild : %d, %d\n",pid, getpid(),a,b);
+	exit(0);
+    }
+    else
+    { //PARENT PROCESS
+            printf("\nParent %d, %d\n",pid, getpid(),a,b);
+           wait();
+
+    }
+    return 0;
+}
+
+Task 1 : Coordinated non-overlapping writes. 
+Task 2 :Use two processes to write into a file. 
+
+Task 1
+1.  [Parent] Create an empty file
+2.  [Parent] Write numbers 1 to 100 separated by spaces into it
+3.  [Parent] Close the file
+4.  [Child]  Create a child process 
+5.  [Child]  Open the file again
+6.  [Child]  Choose 10 random locations between 1 to 100 
+7.  [Child]  Make those locations Zero 
+8.  [Child]  Close the file and exit
+9.  [Parent] Open the file again
+10. [Parent] Print the indexes of the locations that have been set to zero by the Child process
+11. [Parent] Close file and exit
+
+Task 2: Repeat the above using exec. To do this, you need to write the logic for the "Child" process  separately and compile it into an executable. 
+
+1. Run Parent as before.
+2. Create a child process and overlay this using Exec. (man exec, execvp, exec, execlp...execve..)
+3. Run parent post the overlaid process.
